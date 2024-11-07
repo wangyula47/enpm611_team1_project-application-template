@@ -1,0 +1,193 @@
+[
+    {
+      "url": "https://github.com/scikit-learn/scikit-learn/issues/29929",
+      "creator": "cacti77",
+      "labels": [
+        "Bug",
+        "Needs Triage"
+      ],
+      "state": "open",
+      "assignees": [],
+      "title": "Custom estimator's fit() method throws \"RuntimeWarning: invalid value encountered in cast\" in Linux Python 3.11/3.12",
+      "text": "### Describe the bug\r\n\r\nWe have a custom estimator class that inherits from `sklearn.base.BaseEstimator` and `RegressorMixin`. We run automated unit tests in Azure DevOps pipelines on both Windows Server 2022 and Ubuntu 22.04.1. All the tests pass on Windows. On Python 3.12.6 in Linux the test with the stacktrace shown below fails with:\r\n\r\n`RuntimeWarning: invalid value encountered in cast`\r\n\r\nThis causes the test and hence build to fail because we set `PYTHONWARNINGS=error` before running the tests. On Python 3.11.10 in Linux this test actually passes; but a different test using the same custom estimator fails with an identical stacktrace. And yet this latter test passes on Python 3.12 in Linux!\r\n\r\nNote this change in numpy 1.24.0: https://numpy.org/doc/stable/release/1.24.0-notes.html#numpy-now-gives-floating-point-errors-in-casts;  especially this bit:\r\n\r\n> The precise behavior is subject to the C99 standard and its implementation in both software and hardware.\r\n\r\nI can probably work around this error in our tests by using a [numpy.errstate](https://numpy.org/doc/stable/reference/generated/numpy.errstate.html#numpy-errstate) context manager, but could there be a bug in sklearn?\r\n\r\nI don't know if this issue is related to #25319. AFAIK the test data has no nan values; the feature data columns are all float64.\r\n\r\n\r\n### Steps/Code to Reproduce\r\n\r\nSorry, this is proprietary code which I didn't write and don't understand!\r\n\r\n### Expected Results\r\n\r\nThe call to `fit()` succeeds without throwing a `RuntimeWarning`.\r\n\r\n### Actual Results\r\n\r\nStacktrace from Python 3.12.6 x64 on Linux (Ubuntu 22.04.1):\r\n```\r\nTraceback (most recent call last):\r\n  File \"/home/vsts/work/1/tests/<our_test_module>\", line 76, in test_gen_data\r\n    grid_search.fit(data[features].values)\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/sklearn/base.py\", line 1473, in wrapper\r\n    return fit_method(estimator, *args, **kwargs)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/sklearn/model_selection/_search.py\", line 1019, in fit\r\n    self._run_search(evaluate_candidates)\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/sklearn/model_selection/_search.py\", line 1573, in _run_search\r\n    evaluate_candidates(ParameterGrid(self.param_grid))\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/sklearn/model_selection/_search.py\", line 1013, in evaluate_candidates\r\n    results = self._format_results(\r\n              ^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/sklearn/model_selection/_search.py\", line 1137, in _format_results\r\n    for param, ma in _yield_masked_array_for_each_param(candidate_params):\r\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/sklearn/model_selection/_search.py\", line 429, in _yield_masked_array_for_each_param\r\n    ma = MaskedArray(np.empty(n_candidates), mask=True, dtype=arr_dtype)\r\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"/opt/hostedtoolcache/Python/3.12.6/x64/lib/python3.12/site-packages/numpy/ma/core.py\", line 2820, in __new__\r\n    _data = np.array(data, dtype=dtype, copy=copy,\r\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nRuntimeWarning: invalid value encountered in cast\r\n```\r\n\r\n### Versions\r\nRelevant pip-installed package versions, which were all the same in Python 3.11 and 3.12 in both Linux and Windows on Azure DevOps:\r\n```shell\r\nnumpy           1.26.4\r\npandas          2.2.3\r\nscikit-learn    1.5.2\r\nscipy           1.14.1\r\n```\r\n",
+      "number": 29929,
+      "created_date": "2024-09-25T14:42:50+00:00",
+      "updated_date": "2024-09-25T15:11:07+00:00",
+      "timeline_url": "https://api.github.com/repos/scikit-learn/scikit-learn/issues/29929/timeline",
+      "events": [
+        {
+          "event_type": "labeled",
+          "author": "cacti77",
+          "event_date": "2024-09-25T14:42:51+00:00",
+          "label": "Bug"
+        },
+        {
+          "event_type": "labeled",
+          "author": "cacti77",
+          "event_date": "2024-09-25T14:42:51+00:00",
+          "label": "Needs Triage"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/scikit-learn/scikit-learn/issues/29927",
+      "creator": "scikit-learn-bot",
+      "labels": [
+        "Needs Triage"
+      ],
+      "state": "open",
+      "assignees": [],
+      "title": "\u26a0\ufe0f CI failed on Linux_Nightly.pylatest_pip_scipy_dev (last failure: Sep 25, 2024) \u26a0\ufe0f",
+      "text": "**CI failed on [Linux_Nightly.pylatest_pip_scipy_dev](https://dev.azure.com/scikit-learn/scikit-learn/_build/results?buildId=70481&view=logs&j=dfe99b15-50db-5d7b-b1e9-4105c42527cf)** (Sep 25, 2024)\nUnable to find junit file. Please see link for details.",
+      "number": 29927,
+      "created_date": "2024-09-25T02:34:36+00:00",
+      "updated_date": "2024-09-25T02:34:50+00:00",
+      "timeline_url": "https://api.github.com/repos/scikit-learn/scikit-learn/issues/29927/timeline",
+      "events": [
+        {
+          "event_type": "labeled",
+          "author": "github-actions[bot]",
+          "event_date": "2024-09-25T02:34:50+00:00",
+          "label": "Needs Triage"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/scikit-learn/scikit-learn/issues/29925",
+      "creator": "thomasjpfan",
+      "labels": [
+        "API",
+        "module:metrics"
+      ],
+      "state": "open",
+      "assignees": [],
+      "title": "Remove sokalmichener from distance metrics",
+      "text": "SciPy is planning to remove `sokalmichener`: https://github.com/scipy/scipy/pull/21572\r\n\r\nWe reimplement `SokalMichenerDistance` in the distance metric, and it's exactly the same as the implementation `RogersTanimotoDistance`. We can follow SciPy's lead and remove `sokalmichener` as well.\r\n\r\nREF:\r\n\r\nhttps://github.com/scikit-learn/scikit-learn/blob/74a33757c8a8df84d227f28bbc9ec7ae2fb51dea/sklearn/metrics/_dist_metrics.pyx.tp#L2308\r\n\r\nhttps://github.com/scikit-learn/scikit-learn/blob/74a33757c8a8df84d227f28bbc9ec7ae2fb51dea/sklearn/metrics/_dist_metrics.pyx.tp#L2455",
+      "number": 29925,
+      "created_date": "2024-09-24T22:48:09+00:00",
+      "updated_date": "2024-09-25T00:17:14+00:00",
+      "timeline_url": "https://api.github.com/repos/scikit-learn/scikit-learn/issues/29925/timeline",
+      "events": [
+        {
+          "event_type": "labeled",
+          "author": "thomasjpfan",
+          "event_date": "2024-09-24T22:48:09+00:00",
+          "label": "API"
+        },
+        {
+          "event_type": "labeled",
+          "author": "thomasjpfan",
+          "event_date": "2024-09-24T22:48:09+00:00",
+          "label": "module:metrics"
+        },
+        {
+          "event_type": "cross-referenced",
+          "author": "thomasjpfan",
+          "event_date": "2024-09-24T22:49:04+00:00"
+        },
+        {
+          "event_type": "commented",
+          "author": "fancidev",
+          "event_date": "2024-09-25T00:16:35+00:00",
+          "comment": "Thanks for opening the issue. Let me share more background from SciPy\u2019s side.\r\n\r\nThe details are explained in https://github.com/scipy/scipy/issues/2011. In short, the two problems with `sokalmichener` are that (1) its implementation is equivalent to  `rogerstanimoto`, and (2) the standard definition is equivalent to `matching`.\r\n\r\nThe reason for deprecating the function, rather than changing its behavior, is to force the end user to make an informed choice (for `rogerstanimoto` or for `matching`)."
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/scikit-learn/scikit-learn/issues/29923",
+      "creator": "scikit-learn-bot",
+      "labels": [],
+      "state": "open",
+      "assignees": [],
+      "title": "\u26a0\ufe0f CI failed on Linux_free_threaded.pylatest_pip_free_threaded (last failure: Sep 24, 2024) \u26a0\ufe0f",
+      "text": "**CI failed on [Linux_free_threaded.pylatest_pip_free_threaded](https://dev.azure.com/scikit-learn/scikit-learn/_build/results?buildId=70472&view=logs&j=8bc43b48-889f-54b9-cd8b-781ee8447bf2)** (Sep 24, 2024)\nUnable to find junit file. Please see link for details.",
+      "number": 29923,
+      "created_date": "2024-09-24T02:36:01+00:00",
+      "updated_date": "2024-09-25T02:51:05+00:00",
+      "timeline_url": "https://api.github.com/repos/scikit-learn/scikit-learn/issues/29923/timeline",
+      "events": [
+        {
+          "event_type": "labeled",
+          "author": "github-actions[bot]",
+          "event_date": "2024-09-24T02:36:14+00:00",
+          "label": "Needs Triage"
+        },
+        {
+          "event_type": "commented",
+          "author": "lesteve",
+          "event_date": "2024-09-24T09:02:06+00:00",
+          "comment": "Probably temporary glitch when adding deadsnakes PPA for free-threaded:\r\n```\r\n+ sudo add-apt-repository --yes ppa:deadsnakes/nightly\r\nRepository: 'deb https://ppa.launchpadcontent.net/deadsnakes/nightly/ubuntu/ jammy main'\r\nDescription:\r\nhttps://github.com/deadsnakes/nightly\r\npackages are only built for the amd64 architecture for the following:\r\n\r\n- python3.12 (focal, jammy)\r\n- python3.13 (focal, jammy, noble)\r\n- python3.14 (jammy, noble)\r\nMore info: https://launchpad.net/~deadsnakes/+archive/ubuntu/nightly\r\nAdding repository.\r\nAdding deb entry to /etc/apt/sources.list.d/deadsnakes-ubuntu-nightly-jammy.list\r\nAdding disabled deb-src entry to /etc/apt/sources.list.d/deadsnakes-ubuntu-nightly-jammy.list\r\nTraceback (most recent call last):\r\n  File \"/usr/bin/add-apt-repository\", line 364, in <module>\r\n    sys.exit(0 if addaptrepo.main() else 1)\r\n  File \"/usr/bin/add-apt-repository\", line 357, in main\r\n    shortcut.add()\r\n  File \"/usr/lib/python3/dist-packages/softwareproperties/shortcuthandler.py\", line 222, in add\r\n    self.add_key()\r\n  File \"/usr/lib/python3/dist-packages/softwareproperties/shortcuthandler.py\", line 398, in add_key\r\n    if not all((self.trustedparts_file, self.trustedparts_content)):\r\n  File \"/usr/lib/python3/dist-packages/softwareproperties/ppa.py\", line 141, in trustedparts_content\r\n    key = self.lpppa.getSigningKeyData()\r\n  File \"/usr/lib/python3/dist-packages/lazr/restfulclient/resource.py\", line 592, in __call__\r\n    response, content = self.root._browser._request(\r\n  File \"/usr/lib/python3/dist-packages/lazr/restfulclient/_browser.py\", line 429, in _request\r\n    raise error\r\nlazr.restfulclient.errors.ServerError: HTTP Error 500: Internal Server Error\r\nResponse headers:\r\n---\r\nconnection: close\r\ncontent-length: 30\r\ncontent-type: text/plain;charset=utf-8\r\ndate: Tue, 24 Sep 2024 02:35:47 GMT\r\nserver: gunicorn\r\nstatus: 500\r\nx-lazr-oopsid: OOPS-aa415be4212f2b653b1062c01eae4e1d\r\nx-powered-by: Zope (www.zope.org), Python (www.python.org)\r\nx-request-id: f88a75d0-076f-424b-bc64-e4cccccfd947\r\nx-vcs-revision: 1b1ed1ad2dbfc71ee62b5c5491c975135a771bf0\r\n---\r\nResponse body:\r\n---\r\nb'GPGKeyTemporarilyNotFoundError'\r\n---\r\n```\r\n"
+        },
+        {
+          "event_type": "unlabeled",
+          "author": "lesteve",
+          "event_date": "2024-09-24T09:02:10+00:00",
+          "label": "Needs Triage"
+        },
+        {
+          "event_type": "commented",
+          "author": "scikit-learn-bot",
+          "event_date": "2024-09-25T02:51:04+00:00",
+          "comment": "## CI is no longer failing! \u2705\n\n[Successful run](https://dev.azure.com/scikit-learn/scikit-learn/_build/results?buildId=70481&view=logs&j=8bc43b48-889f-54b9-cd8b-781ee8447bf2) on Sep 25, 2024"
+        }
+      ]
+    },
+    {
+      "url": "https://github.com/scikit-learn/scikit-learn/issues/29922",
+      "creator": "facusapienza21",
+      "labels": [
+        "Bug",
+        "Needs Triage"
+      ],
+      "state": "open",
+      "assignees": [],
+      "title": "Random forest regression fails when calling data: probably a numerical error",
+      "text": "### Describe the bug\r\n\r\nIt is known that random forrest regression (as well as many decision tree-based methods) are not affected by the scale of the data and don't require any scaling in the feature matrix or response vector. This includes all types of scaling, like standard normalization (remove the mean, divide by the standard deviation) as well as simple scale scaling (constant multiplication or general linear transformations). \r\n\r\nHowever, here there is an example where the absolute scale drastically affects the performance of random forest. Just by multiplying the response by a small number, the performance drastically falls. I am pretty sure this is associated to numerical errors, but notice that the scale factor is not close to machine epsilon. \r\n\r\n**Note: ** I actually found this example by first noticing that RF was drastically failing with my scientific data, and fixing it by rescaling the response vector to more reasonable values. This is of course a very simple solution, but I can imagine many users having similar problems and not being able to find this fix given that this should not be required. \r\n\r\nI am more than happy to help fixing this bug, but I wanted to documented it first and check with the developers first in case there is something I am missing. \r\n\r\n### Steps/Code to Reproduce\r\n\r\n```py\r\nimport numpy as np\r\nimport pandas as pd\r\nimport matplotlib.pyplot as plt\r\nfrom sklearn.ensemble import RandomForestRegressor\r\nfrom sklearn.metrics import mean_squared_error, r2_score\r\n\r\nnp.random.seed(666)\r\nn, p = 1000, 10\r\n\r\n# Generate some feature matrix\r\nX = np.random.normal(size=(n,p))\r\n# Generate some simple feature response to predict\r\nY = 0.5 * X[:, 0] + X[:, 1] + np.random.normal(scale=0.1, size=(n,))\r\n\r\n# This breaks at scales ~ 1e-5\r\nresponse_scale_X = 1\r\n# For response scale smaller than 1e-8 the prediction breaks\r\nresponse_scale_Y = 1e-8\r\n\r\n# Multiply response and/or feature by a numerical constant\r\nX *= response_scale_X\r\nY *= response_scale_Y\r\n\r\nmodel_rf = RandomForestRegressor(n_estimators=300, \r\n                                 random_state=616, \r\n                                 max_depth=4, \r\n                                 verbose=1)\r\n\r\nmodel_rf.fit(X, Y)\r\n\r\nY_pred = model_rf.predict(X)\r\n\r\n# Evaluate the model\r\nrmse = mean_squared_error(Y, Y_pred, squared=False)\r\nr2 = r2_score(Y, Y_pred)\r\n```\r\n\r\n### Expected Results\r\n\r\nThis are the results when `response_scale_X = 1` and `response_scale_Y = 1`. You can see a very good prediction level \r\n```python\r\n> print(f\"RMSE: {rmse}\")\r\n> print(f\"R\u00b2 Score: {r2}\")\r\nRMSE: 0.22987215286423807\r\nR\u00b2 Score: 0.9561243282262417\r\n```\r\n<img width=\"657\" alt=\"image\" src=\"https://github.com/user-attachments/assets/fc1472da-17aa-4ee8-8249-66fcc29db51c\">\r\n\r\n\r\n### Actual Results\r\n\r\nNow, when changing the scale factor we see how performance deteriorates. Here an example for `response_scale_X=1e-6`. When smaller, the response is just constant. \r\n```\r\nRMSE: 0.9899243441583097\r\nR\u00b2 Score: 0.23064636597588262\r\n```\r\n<img width=\"655\" alt=\"image\" src=\"https://github.com/user-attachments/assets/57829397-5c7b-4261-91a8-64a476e53302\">\r\n\r\n\r\n### Versions\r\n\r\n```shell\r\nThis is the version I am using, but I observed the issue with other machines and sklearn versions too.\r\n\r\nSystem:\r\n    python: 3.12.5 | packaged by conda-forge | (main, Aug  8 2024, 18:31:54) [Clang 16.0.6 ]\r\nexecutable: /usr/local/Caskroom/miniforge/base/bin/python3.12\r\n   machine: macOS-14.6.1-x86_64-i386-64bit\r\n\r\nPython dependencies:\r\n      sklearn: 1.5.2\r\n          pip: 24.2\r\n   setuptools: 73.0.1\r\n        numpy: 2.0.2\r\n        scipy: 1.14.1\r\n       Cython: None\r\n       pandas: 2.2.2\r\n   matplotlib: 3.9.2\r\n       joblib: 1.3.0\r\nthreadpoolctl: 3.5.0\r\n\r\nBuilt with OpenMP: True\r\n\r\nthreadpoolctl info:\r\n       user_api: openmp\r\n   internal_api: openmp\r\n    num_threads: 8\r\n         prefix: libomp\r\n       filepath: /Users/facundosapienza/.local/lib/python3.12/site-packages/sklearn/.dylibs/libomp.dylib\r\n        version: None\r\n\r\n```\r\n```\r\n",
+      "number": 29922,
+      "created_date": "2024-09-23T18:06:17+00:00",
+      "updated_date": "2024-09-25T12:43:50+00:00",
+      "timeline_url": "https://api.github.com/repos/scikit-learn/scikit-learn/issues/29922/timeline",
+      "events": [
+        {
+          "event_type": "labeled",
+          "author": "facusapienza21",
+          "event_date": "2024-09-23T18:06:17+00:00",
+          "label": "Bug"
+        },
+        {
+          "event_type": "labeled",
+          "author": "facusapienza21",
+          "event_date": "2024-09-23T18:06:17+00:00",
+          "label": "Needs Triage"
+        },
+        {
+          "event_type": "commented",
+          "author": "lesteve",
+          "event_date": "2024-09-24T08:16:36+00:00",
+          "comment": "Thanks for the issue and the reproducer!\r\n\r\nI don't observe the issue trying to scale `X` (I tried with `1e-20` scale factor and still get a r2 ~ 0.95), not sure what could cause the different behaviour ...\r\n\r\nI do see the issue with scaling `y` by a `1e-8` factor. What probably happens is that the default criterion being mse, the square of `y` is of the order of `1e-16`, i.e. of the machine precision, and individual tree learning doesn't work well since the criterion is mostly numerical noise. "
+        },
+        {
+          "event_type": "commented",
+          "author": "facusapienza21",
+          "event_date": "2024-09-24T22:15:16+00:00",
+          "comment": "Hi @lesteve, thank you for your response. \r\n\r\nWeird you don't observe the problem when scaling X, but at least you see it when scaling Y. I agree that there is a floating point arithmetic issue here. I also thought it was related to the squaring operation in the MSE, but for the following scalings:\r\n```python\r\n# This breaks at scales ~ 1e-5\r\nresponse_scale_X = 1\r\n# For response scale smaller than 1e-8 the prediction breaks\r\n> response_scale_Y = 1e-9\r\n\r\n(np.float64(1.1285972813488363),\r\n array([[1.        , 0.41083351],\r\n        [0.41083351, 1.        ]]))\r\n```\r\nyou can compute other statistics, such as the correlation and standard deviation, and these give the right result even after scaling: \r\n```python\r\n# We can see that basic stats don't break with small numbers \r\nnp.std(Y) / response_scale_Y, np.corrcoef(X[:,0], Y) \r\n```\r\nThis makes me thing that there is something that can be done inside RF to solve this issue. I tried `criterion=\"absolute_error\"` and effectively this error does not happen. \r\n\r\nIndependently if it is possible to solve this inside RF, I think it would be useful to add a warning or something that let the user know that RF won't work when internal computed quantities are near machine precision. Thought? "
+        },
+        {
+          "event_type": "mentioned",
+          "author": "lesteve",
+          "event_date": "2024-09-24T22:15:17+00:00"
+        },
+        {
+          "event_type": "subscribed",
+          "author": "lesteve",
+          "event_date": "2024-09-24T22:15:17+00:00"
+        },
+        {
+          "event_type": "commented",
+          "author": "Rachit23110261",
+          "event_date": "2024-09-25T12:40:51+00:00",
+          "comment": "> Thanks for the issue and the reproducer!\r\n> \r\n> I don't observe the issue trying to scale `X` (I tried with `1e-20` scale factor and still get a r2 ~ 0.95), not sure what could cause the different behaviour ...\r\n> \r\n> I do see the issue with scaling `y` by a `1e-8` factor. What probably happens is that the default criterion being mse, the square of `y` is of the order of `1e-16`, i.e. of the machine precision, and individual tree learning doesn't work well since the criterion is mostly numerical noise.\r\n\r\nI also found the same thing happening, so what should we do now, add a warning or fix some internal scaling? \r\n"
+        }
+      ]
+    }
+]
