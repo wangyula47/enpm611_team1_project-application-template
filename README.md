@@ -25,10 +25,13 @@ In the root directory of the application, create a virtual environment, activate
 pip install -r requirements.txt
 ```
 
+<<<<<<< HEAD
 ### configure the data file
 For this project, instead of downloading the data file and configuring the path manually or through an environment variable, we've embedded the JSON file directly within the project directory and updated the configuration to point to this file location. 
 
 
+=======
+>>>>>>> 5168991 (Updated README)
 ### Run an analysis
 
 With everything set up, you should be able to run the existing example analysis:
