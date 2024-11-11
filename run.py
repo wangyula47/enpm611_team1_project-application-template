@@ -8,7 +8,7 @@ import argparse
 
 import config
 from example_analysis import ExampleAnalysis
-# from first_analysis import FirstAnalysis
+from first_analysis import FirstAnalysis
 from second_analysis import Second_analysis
 from third_analysis import ThirdFeatureAnalysis
 from fourth_analysis import FourthAnalysis
@@ -52,7 +52,7 @@ config.overwrite_from_args(args)
 if args.feature == 0:
     ExampleAnalysis().run()
 elif args.feature == 1:
-    pass # TODO call First analysis
+    FirstAnalysis().run()
 elif args.feature == 2:
     Second_analysis().run()
 elif args.feature == 3:
