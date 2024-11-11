@@ -1,5 +1,4 @@
 
-
 """
 Starting point of the application. This module is invoked from
 the command line to run the analyses.
@@ -9,7 +8,11 @@ import argparse
 
 import config
 from example_analysis import ExampleAnalysis
-from first_analysis import FirstAnalysis
+# from first_analysis import FirstAnalysis
+from second_analysis import Second_analysis
+from third_analysis import ThirdFeatureAnalysis
+from fourth_analysis import FourthAnalysis
+
 
 
 def parse_args():
@@ -49,10 +52,12 @@ config.overwrite_from_args(args)
 if args.feature == 0:
     ExampleAnalysis().run()
 elif args.feature == 1:
-    FirstAnalysis().run()
+    pass # TODO call First analysis
 elif args.feature == 2:
-    pass # TODO call second analysis
+    Second_analysis().run()
 elif args.feature == 3:
-    pass # TODO call third analysis
+    ThirdFeatureAnalysis().run()
+elif args.feature == 4:
+    FourthAnalysis().run()
 else:
     print('Need to specify which feature to run with --feature flag.')
