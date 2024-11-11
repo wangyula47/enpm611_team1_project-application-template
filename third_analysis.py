@@ -19,7 +19,7 @@ class ThirdFeatureAnalysis:
         # Initialize configuration and data loader
         config._init_config()
         self.issues: List[Issue] = DataLoader().get_issues()
-        self.output_path = "/Users/wangyu/Desktop/ENPM611_group_project/enpm611_team1_project-application-template"
+        # self.output_path = "/Users/wangyu/Desktop/ENPM611_group_project/enpm611_team1_project-application-template" 
 
     def run(self):
         """
