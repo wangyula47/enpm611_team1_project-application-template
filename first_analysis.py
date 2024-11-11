@@ -30,65 +30,121 @@ class FirstAnalysis:
 
 
         issues:List[Issue] = DataLoader().get_issues()    
-
-        event_label_counter = {}    
+ 
+        author_event_count = {} 
         
-
-        # view label frequnecies, exclude events with no label (none)
         for issue in issues:
             # print(issue.url)
             for event in issue.events:
-                if event.label is not None:
-                    if event.label in event_label_counter.keys():
-                        event_label_counter[event.label] += 1  
+                if event.author is not None:
+                    if event.author not in author_event_count:
+                        author_event_count[event.author] = 1 
                     else:
-                        event_label_counter[event.label] = 1 
+                        author_event_count[event.author] += 1 
 
 
-        # print(event_label_counter)
-            # Convert the dictionary to a pandas DataFrame
-        df = pd.DataFrame.from_dict(event_label_counter, orient='index', columns=['frequency'])
+        key_width = max(len(key) for key in author_event_count.keys())
 
-        # Plot the DataFrame as a bar chart
-        df.plot(kind='bar')
+        # Function to categorize keys based on alphabetical range
+        def categorize_key(key):
+            if 'A' <= key[0] <= 'G':
+                return 'A-G'
+            elif 'H' <= key[0] <= 'N':
+                return 'H-N'
+            elif 'O' <= key[0] <= 'T':
+                return 'O-T'
+            elif 'U' <= key[0] <= 'Z':
+                return 'U-Z'
+            else:
+                return 'Other'
 
-        # Add a title and labels
-        plt.title('Frequency Distribution')
-        plt.xlabel('Item')
-        plt.ylabel('Frequency')
+        # Group keys into alphabetical ranges
+        grouped_keys = {
+            'A-G': [],
+            'H-N': [],
+            'O-T': [],
+            'U-Z': []
+        }
 
-        # Show the plot
-        plt.show()
+        # Assign each key to its respective group
+        for key in sorted(author_event_count.keys()):
+            category = categorize_key(key)
+            if category in grouped_keys:
+                grouped_keys[category].append((key, author_event_count[key]))
 
-        event_type_counter = {} 
+        # Map numerical choices to alphabetical ranges
+        choices = {
+            1: 'A-G',
+            2: 'H-N',
+            3: 'O-T',
+            4: 'U-Z'
+        }
 
-        # search across eventypes that are unlabeled 
-        for issue in issues:
-            # print(issue.url)
-            for event in issue.events:
+        # Display choices for the user
+        print("Please select an alphabetical range of author usernames to view:")
+        for num, label in choices.items():
+            print(f"{num}. {label}")
+
+
+        while True: 
+            user_choice = int(input("Enter your choice (1, 2, 3, or 4): "))
+            selected_category = choices.get(user_choice)
                 
-                if event.label is None:
-                    if event.event_type in event_type_counter.keys():
-                        event_type_counter[event.event_type] += 1  
-                    else:
-                        event_type_counter[event.event_type] = 1 
+            if selected_category in grouped_keys:
+                print(f"\nCategory: {selected_category}")
+                print(f"{'No.':<3} | {'Author username':{key_width}} | Events")
+                print("-" * (key_width + 15))  # separator line for readability
 
-
-        #print(event_type_counter)
-
-        df = pd.DataFrame.from_dict(event_type_counter, orient='index', columns=['frequency'])
-
-        # Plot the DataFrame as a bar chart
-        df.plot(kind='bar')
-
-        # Add a title and labels
-        plt.title('Frequency Distribution')
-        plt.xlabel('Item')
-        plt.ylabel('Frequency')
-
-        # Show the plot
-        plt.show()
+                for idx, (key, value) in enumerate(grouped_keys[selected_category], start=1):
+                    print(f"{idx:<3} | {key:{key_width}} | {value:>5}")
+                
+                break
+            else:
+                print("Invalid choice. Please select a number between 1 and 4.")
+            
         
+        while True:
+            user_selection = (input("Enter authors name or No. in list: "))
+            try:
+                # Check if input is an index
+                selection_index = int(user_selection) - 1
+                if 0 <= selection_index < len(grouped_keys[selected_category]):
+                    selected_author = grouped_keys[selected_category][selection_index][0]
+                    print("Event Author found: ", selected_author)
+                    break
+                else:
+                    print("Invalid index. Please try again.")
+            except ValueError:
+                # Check if input matches an author name
+                if any(user_selection == author[0] for author in grouped_keys[selected_category]):
+                    print("Event Author found: ", user_selection)
+                    selected_author = user_selection
+                    break
+                else:
+                    print("Author not found in the selected category.")
+
+        event_type_count = {}
+        for issue in issues:
+            for event in issue.events:
+                if event.author == selected_author:
+
+                    if event.event_type not in event_type_count:
+                        event_type_count[event.event_type] = 1 
+                    else:
+                        event_type_count[event.event_type] += 1 
+
+        #print(event_type_count)
+
+        key_width = max(len(str(key)) for key in event_type_count.keys())
+        value_width = max(len(str(value)) for value in event_type_count.values())
+        
+        # Header with column names
+        print(f"{'No.':<3} | {'Event Type':{key_width}} | {'Count':{value_width}}")
+        print("-" * (key_width + value_width + 10))  # separator line for readability
+
+        # Print each key-value pair with an index
+        for idx, (key, value) in enumerate(sorted(event_type_count.items()), start=1):
+            print(f"{idx:<3} | {key:{key_width}} | {value:>{value_width}}")
 
 
 if __name__ == '__main__':
