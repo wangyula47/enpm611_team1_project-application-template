@@ -9,7 +9,6 @@ import argparse
 
 import config
 from example_analysis import ExampleAnalysis
-from first_analysis import FirstAnalysis
 from second_analysis import Second_analysis
 
 
