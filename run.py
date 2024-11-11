@@ -11,6 +11,7 @@ from example_analysis import ExampleAnalysis
 # from first_analysis import FirstAnalysis
 from second_analysis import Second_analysis
 from third_analysis import ThirdFeatureAnalysis
+from fourth_analysis import FourthAnalysis
 
 
 
@@ -56,5 +57,7 @@ elif args.feature == 2:
     Second_analysis().run()
 elif args.feature == 3:
     ThirdFeatureAnalysis().run()
+elif args.feature == 4:
+    FourthAnalysis().run()
 else:
     print('Need to specify which feature to run with --feature flag.')
