@@ -9,9 +9,16 @@ This application template implements some of the basic functions:
 - `config.py`: Supports configuring the application via the `config.json` file. You can add other configuration paramters to the `config.json` file.
 - `run.py`: This is the module that will be invoked to run your application. Based on the `--feature` command line parameter, one of the three analyses you implemented will be run. You need to extend this module to call other analyses.
 
-With the utility functions provided, you should focus on implementing creative analyses that generate intersting and insightful insights.
+With the utility functions provided, you should focus on implementing creative analyses that generate interesting and insightful insights.
 
 In addition to the utility functions, an example analysis has also been implemented in `example_analysis.py`. It illustrates how to use the provided utility functions and how to produce output.
+## First Analysis Function 
+The module `first_analysis.py` which is invoked by the `run.py` contains our first analysis of the poetry issues json file. In this analysis, we offer the user the ability to see all the authors of user events, how many events they curated, and the frequency of event_label's for said author. Depending on the file size, the number of authors can make our insights very unpleasant to view, because of this, we sort the author usernames alphabetically and allow the user to select which subgroup to view (A-G, H-N, O-T, U-Z). From there, we list authors within that group and prompt the user to select an author. We then show a breakdown of the frequency of event_label's for the events the author created. 
+## Second Analysis Function 
+## Third Analysis Function 
+## Fourth Analysis Function 
+
+
 
 ## Setup
 
