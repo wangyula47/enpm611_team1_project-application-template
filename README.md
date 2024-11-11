@@ -1,68 +1,49 @@
-# GitHub Issue Analysis Project
+# ENPM611 Project Application Template
 
-This project aims to analyze GitHub issues using data loaded from a JSON file (`poetry_issues.json`). The analysis explores various metrics of GitHub issues, such as the impact of specific events on issue resolution, the most common labels, and frequent word occurrences in issue descriptions.
+This is the template for the ENPM611 class project. Use this template in conjunction with the provided data to implement an application that analyzes GitHub issues for the [poetry](https://github.com/python-poetry/poetry/issues) Open Source project and generates interesting insights.
 
-The repository includes several Python scripts, each performing a unique analysis, and utility functions that help load, configure, and model the data for use in these analyses.
+This application template implements some of the basic functions:
 
-## File Descriptions
+- `data_loader.py`: Utility to load the issues from the provided data file and returns the issues in a runtime data structure (e.g., objects)
+- `model.py`: Implements the data model into which the data file is loaded. The data can then be accessed by accessing the fields of objects.
+- `config.py`: Supports configuring the application via the `config.json` file. You can add other configuration paramters to the `config.json` file.
+- `run.py`: This is the module that will be invoked to run your application. Based on the `--feature` command line parameter, one of the three analyses you implemented will be run. You need to extend this module to call other analyses.
 
-- `config.json`: Contains configuration details, such as the path to the dataset file (`poetry_issues.json`). The data path is referenced in other modules to load the issue data.
-- `config.py`: Manages the loading of configuration settings, allowing easy access to parameters specified in `config.json`. You can extend this to add more configuration options as needed.
-- `data_loader.py`: Defines a `DataLoader` class responsible for loading GitHub issues from the specified JSON file. It loads the issues into memory and provides access to the data in the form of Python objects.
-- `model.py`: Defines data models (`Issue` and `Event`) used to represent GitHub issues and their associated events. The data models make it easy to access and manipulate issue data.
-- `example_analysis.py`: Provides an example analysis that examines the top creators of issues. This serves as a starting point for implementing additional analyses.
-- `third_analysis.py`: Implements an analysis to explore the impact of certain events on issue resolution time. It generates scatter plots showing the relationship between event occurrences and resolution time.
-- `run.py`: This script serves as the main entry point to execute the analyses. It allows users to select which analysis to run using command line arguments.
-- `requirements.txt`: Lists the dependencies needed to run the project. Install these dependencies before running the scripts.
+With the utility functions provided, you should focus on implementing creative analyses that generate intersting and insightful insights.
+
+In addition to the utility functions, an example analysis has also been implemented in `example_analysis.py`. It illustrates how to use the provided utility functions and how to produce output.
 
 ## Setup
 
-To get started, clone this repository to your local computer and set up your environment as described below.
+To get started, your team should create a fork of this repository. Then, every team member should clone your repository to their local computer. 
 
-### Install Dependencies
 
-In the root directory of the project, create a virtual environment, activate it, and install the required dependencies by running the following command:
+### Install dependencies
 
-```sh
+In the root directory of the application, create a virtual environment, activate that environment, and install the dependencies like so:
+
+```
 pip install -r requirements.txt
 ```
 
-### Download and Configure the Data File
+### Download and configure the data file
 
-Download the data file (`poetry_issues.json`) and update the `config.json` with the correct path to the file. Alternatively, you can specify an environment variable (`ENPM611_PROJECT_DATA_PATH`) with the same value to avoid hardcoding the path.
+Download the data file (in `json` format) from the project assignment in Canvas and update the `config.json` with the path to the file. Note, you can also specify an environment variable by the same name as the config setting (`ENPM611_PROJECT_DATA_PATH`) to avoid committing your personal path to the repository.
 
-### Run an Analysis
 
-With everything set up, you can run the analyses provided in the project. For example, to run the third analysis:
+### Run an analysis
 
-```sh
-python run.py --feature 3
+With everything set up, you should be able to run the existing example analysis:
+
+```
+python run.py --feature 0
 ```
 
-This command runs the analysis described in `third_analysis.py` and produces relevant output and visualizations.
+That will output basic information about the issues to the command line.
 
-## VS Code Run Configuration
 
-To make development easier, runtime configurations are provided to run each of the analyses. When you click the run button in the left-hand side toolbar of VS Code, you can select any of the analyses to run or simply run the currently opened file. This setup makes debugging more convenient.
+## VSCode run configuration
 
-The run configuration is specified in `.vscode/launch.json`, which you can modify as needed. The `.vscode/settings.json` file also customizes the VS Code interface slightly to make navigation and debugging easier, but you can remove or modify those settings according to your preference.
+To make the application easier to debug, runtime configurations are provided to run each of the analyses you are implementing. When you click on the run button in the left-hand side toolbar, you can select to run one of the three analyses or run the file you are currently viewing. That makes debugging a little easier. This run configuration is specified in the `.vscode/launch.json` if you want to modify it.
 
-## Example Analysis
-
-- **Third Analysis (`third_analysis.py`)**: Analyzes how specific events (e.g., labeling or assigning) impact the resolution time of GitHub issues. It generates scatter plots showing the relationship between event occurrence and resolution time.
-- **Example Analysis (`example_analysis.py`)**: Examines the top creators of GitHub issues and displays a bar chart showing their contributions.
-
-## Notes
-
-- Ensure that the dataset file (`poetry_issues.json`) is located in the correct path as specified in `config.json`.
-- You can modify `config.json` if your dataset is located elsewhere.
-
-## Editing in VS Code
-
-To edit and run the files in VS Code:
-
-1. **Open Project Folder**: Open the project folder in VS Code by selecting `File > Open Folder...`.
-2. **Locate and Edit Files**: Click on any file in the Explorer pane on the left to open it for editing.
-3. **Run the Analysis**: Use the integrated terminal or the run configurations to execute the analysis scripts.
-
-Feel free to expand upon the example analyses and create more insightful visualizations of the GitHub issues data!
+The `.vscode/settings.json` also customizes the VSCode user interface sligthly to make navigation and debugging easier. But that is a matter of preference and can be turned off by removing the appropriate settings.
