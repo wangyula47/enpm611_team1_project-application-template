@@ -75,7 +75,7 @@ class ThirdFeatureAnalysis:
                 plt.xlabel('Days Since Creation to Labeling')
                 plt.ylabel('Resolution Time (Days)')
                 plt.tight_layout()
-                plt.savefig(f"{self.output_path}/impact_of_labeling_time.png")
+                # plt.savefig(f"{self.output_path}/impact_of_labeling_time.png")
                 plt.show()
             else:
                 print("No labeled events available for plotting.")
@@ -92,7 +92,7 @@ class ThirdFeatureAnalysis:
                 plt.xlabel('Days Since Creation to Assignment')
                 plt.ylabel('Resolution Time (Days)')
                 plt.tight_layout()
-                plt.savefig(f"{self.output_path}/impact_of_assignment_time.png")
+                # plt.savefig(f"{self.output_path}/impact_of_assignment_time.png")
                 plt.show()
             else:
                 print("No assigned events available for plotting.")
