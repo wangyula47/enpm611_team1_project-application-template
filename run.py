@@ -8,7 +8,7 @@ import argparse
 
 import config
 from example_analysis import ExampleAnalysis
-from first_analysis import FirstAnalysis
+# from first_analysis import FirstAnalysis
 from second_analysis import Second_analysis
 from third_analysis import ThirdFeatureAnalysis
 
@@ -55,6 +55,6 @@ elif args.feature == 1:
 elif args.feature == 2:
     Second_analysis().run()
 elif args.feature == 3:
-    ThirdFeatureAnalysis.run()
+    ThirdFeatureAnalysis().run()
 else:
     print('Need to specify which feature to run with --feature flag.')
